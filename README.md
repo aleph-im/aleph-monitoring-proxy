@@ -10,6 +10,18 @@ Use it to explore the available endpoints.
 
 Use with a tool such as [Uptime Kuma](https://github.com/louislam/uptime-kuma).
 
+## Deployment
+
+```shell
+hatch run deployment:aleph program upload src monitoring_proxy:app
+```
+
+Update an existing deployment:
+
+```shell
+hatch run deployment:aleph program update $ITEM_HASH src
+```
+
 ## Development
 
 ```shell
