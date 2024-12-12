@@ -46,10 +46,8 @@ async def get_recent_metrics_age(api_url_prefix: str, now: datetime) -> timedelt
     Get the age of the most recent metrics from the specified `pyaleph` node.
     """
     recent_metrics = await get_recent_metrics(api_url_prefix)
-    print(recent_metrics)
     signed_timestamp: float = recent_metrics[0]["content"]["time"]
     signed_datetime = datetime.fromtimestamp(signed_timestamp, tz=timezone.utc)
-    print("Z", now, signed_datetime, recent_metrics[0]["content"]["time"])
     return now - signed_datetime
 
 

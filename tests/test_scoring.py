@@ -1,16 +1,23 @@
-from unittest.mock import patch, AsyncMock
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from aiohttp.client_exceptions import ClientError
 from aioresponses import aioresponses
 
-from monitoring_proxy.scoring import get_node_sync_status, get_scoring_node_metrics, parse_prometheus_metrics
+from monitoring_proxy.scoring import (
+    get_node_sync_status,
+    get_scoring_node_metrics,
+    parse_prometheus_metrics,
+)
 
-NODE_METRICS = "\n".join((
-    "pyaleph_status_sync_pending_messages_total 10",
-    "pyaleph_status_sync_pending_txs_total 2",
-    "pyaleph_status_chain_eth_height_remaining_total 500",
-))
+NODE_METRICS = "\n".join(
+    (
+        "pyaleph_status_sync_pending_messages_total 10",
+        "pyaleph_status_sync_pending_txs_total 2",
+        "pyaleph_status_chain_eth_height_remaining_total 500",
+    )
+)
+
 
 @pytest.mark.asyncio
 async def test_parse_prometheus_metrics():
@@ -25,10 +32,7 @@ async def test_parse_prometheus_metrics():
 @pytest.mark.asyncio
 async def test_returns_scoring_node_metrics():
     with aioresponses() as mock_responses:
-        mock_responses.get(
-            "http://51.159.106.166:4024/metrics",
-            body=NODE_METRICS
-        )
+        mock_responses.get("http://51.159.106.166:4024/metrics", body=NODE_METRICS)
 
         metrics = await get_scoring_node_metrics()
         assert metrics["pyaleph_status_sync_pending_messages_total"] == 10

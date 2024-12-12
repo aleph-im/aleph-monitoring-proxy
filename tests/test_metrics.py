@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from aioresponses import aioresponses
@@ -74,8 +74,15 @@ async def test_returns_metrics_age_by_node():
         {"content": {"time": (now - timedelta(minutes=30)).timestamp()}}
     ]
 
+    def mock_now(tz=None):
+        return now
+
+    mock_datetime = MagicMock(now=mock_now)
+    mock_datetime.fromtimestamp = datetime.fromtimestamp
+
     with patch("monitoring_proxy.metrics.get_recent_metrics", new=async_mock):
-        metrics_age = await get_metrics_age_by_node()
+        with patch("monitoring_proxy.metrics.datetime", new=mock_datetime):
+            metrics_age = await get_metrics_age_by_node()
 
     assert metrics_age.acceptable
     assert metrics_age.scoring_node < 5400

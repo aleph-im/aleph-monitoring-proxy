@@ -9,6 +9,7 @@ from monitoring_proxy.scoring import ScoringNodeSyncStatus
 
 client = TestClient(app)
 
+
 def test_index():
     response = client.get("/")
     assert response.status_code == 200
@@ -33,11 +34,15 @@ async def test_returns_201_when_node_sync_is_acceptable():
         "eth_height_remaining": 500,
     }
 
+
 @pytest.mark.asyncio
 async def test_returns_503_when_node_sync_is_not_acceptable():
     async_mock = AsyncMock()
     async_mock.return_value = ScoringNodeSyncStatus(
-        acceptable=False, pending_messages=100, pending_txs=10, eth_height_remaining=2000
+        acceptable=False,
+        pending_messages=100,
+        pending_txs=10,
+        eth_height_remaining=2000,
     )
 
     with patch("monitoring_proxy.main.get_node_sync_status", new=async_mock):
@@ -50,6 +55,7 @@ async def test_returns_503_when_node_sync_is_not_acceptable():
         "pending_txs": 10,
         "eth_height_remaining": 2000,
     }
+
 
 @pytest.mark.asyncio
 async def test_returns_201_when_metrics_age_is_acceptable():
@@ -67,6 +73,7 @@ async def test_returns_201_when_metrics_age_is_acceptable():
         "scoring_node": 3000,
         "reference_node": 3000,
     }
+
 
 @pytest.mark.asyncio
 async def test_returns_503_when_metrics_age_is_not_acceptable():
