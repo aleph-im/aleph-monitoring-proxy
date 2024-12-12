@@ -61,14 +61,15 @@ cov = [
 [tool.hatch.envs.linting]
 detached = true
 dependencies = [
-  "black",
-  "mypy",
-  "ruff",
-  "isort",
-  "fastapi",
-  "aiohttp",
-    "pytest",
-    "aioresponses",
+  "black==24.10.0",
+  "mypy==1.13.0",
+  "ruff==0.8.2",
+  "isort==5.13.2",
+  "fastapi==0.115.6",
+  "aiohttp==3.11.10",
+  "pytest==8.3.4",
+  "aioresponses==0.7.7",
+  "aleph-sdk-python==1.2.1",
 ]
 [tool.hatch.envs.linting.scripts]
 typing = "mypy {args:.}"
@@ -87,6 +88,16 @@ all = [
   "style",
   "typing",
 ]
+
+[tool.hatch.envs.deployment]
+detached = true
+dependencies = [
+  "aleph-client==1.3.0",
+  "aleph-sdk-python==1.2.1",
+]
+[tool.hatch.envs.deployment.scripts]
+deploy = "python ./deploy.py"
+update = "aleph program update $ITEM_HASH monitoring_proxy:app"
 
 [tool.mypy]
 python_version = "3.11"
@@ -110,3 +121,8 @@ fail_under = 100
 [tool.coverage.paths]
 aleph_vm = ["src/monitoring_proxy"]
 tests = ["tests", "src/monitoring_proxy"]
+
+[tool.coverage.run]
+omit = [
+  "deploy.py"
+]
