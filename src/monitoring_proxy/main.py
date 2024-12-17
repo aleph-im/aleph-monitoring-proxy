@@ -29,7 +29,7 @@ async def check_scoring_node_sync(response: Response) -> ScoringNodeSyncStatus:
     """
     node_status = await get_node_sync_status()
     response.status_code = (
-        status.HTTP_201_CREATED
+        status.HTTP_200_OK
         if node_status.acceptable
         else status.HTTP_503_SERVICE_UNAVAILABLE
     )
@@ -43,7 +43,7 @@ async def check_metrics_age(response: Response) -> MetricsAge:
     """
     metrics_age = await get_metrics_age_by_node()
     response.status_code = (
-        status.HTTP_201_CREATED
+        status.HTTP_200_OK
         if metrics_age.acceptable
         else status.HTTP_503_SERVICE_UNAVAILABLE
     )
