@@ -1,7 +1,7 @@
 import aiohttp
 from pydantic import BaseModel
 
-SCORING_NODE_URL = "http://51.159.106.166:4024".rstrip("/")
+SCORING_NODE_URL = "http://46.255.204.203:4024".rstrip("/")
 
 
 class ScoringNodeSyncStatus(BaseModel):
