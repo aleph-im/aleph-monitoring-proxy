@@ -9,9 +9,9 @@ from typing import Tuple
 from zipfile import BadZipFile
 
 try:
-    import magic
+    import magic  # type: ignore [no-redef]
 except ImportError:
-    magic = None
+    magic = None  # type: ignore [assignment]
 
 from aleph.sdk import AuthenticatedAlephHttpClient
 from aleph.sdk.account import _load_account
@@ -24,6 +24,9 @@ from aleph_message.status import MessageStatus
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+if not magic:
+    logger.info("Module 'magic' not found")
 
 channel = "aleph-infrastructure"
 
