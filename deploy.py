@@ -8,7 +8,11 @@ from shutil import make_archive
 from typing import Tuple
 from zipfile import BadZipFile
 
-import magic
+try:
+    import magic
+except ImportError:
+    magic = None
+
 from aleph.sdk import AuthenticatedAlephHttpClient
 from aleph.sdk.account import _load_account
 from aleph.sdk.conf import settings
