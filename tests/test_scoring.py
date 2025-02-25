@@ -5,6 +5,7 @@ from aiohttp.client_exceptions import ClientError
 from aioresponses import aioresponses
 
 from monitoring_proxy.scoring import (
+    SCORING_NODE_URL,
     get_node_sync_status,
     get_scoring_node_metrics,
     parse_prometheus_metrics,
@@ -32,7 +33,7 @@ async def test_parse_prometheus_metrics():
 @pytest.mark.asyncio
 async def test_returns_scoring_node_metrics():
     with aioresponses() as mock_responses:
-        mock_responses.get("http://51.159.106.166:4024/metrics", body=NODE_METRICS)
+        mock_responses.get(SCORING_NODE_URL + "/metrics", body=NODE_METRICS)
 
         metrics = await get_scoring_node_metrics()
         assert metrics["pyaleph_status_sync_pending_messages_total"] == 10
@@ -102,7 +103,7 @@ async def test_handles_high_eth_height_remaining():
 @pytest.mark.asyncio
 async def test_handles_client_error():
     with aioresponses() as mock_responses:
-        mock_responses.get("http://51.159.106.166:4024/metrics", exception=ClientError)
+        mock_responses.get(SCORING_NODE_URL + "/metrics", exception=ClientError)
 
         with pytest.raises(ClientError):
             await get_scoring_node_metrics()
