@@ -36,6 +36,7 @@ async def get_recent_metrics(api_url: str) -> list[dict]:
     async with session:
         print(session)
         async with session.get(api_url + RECENT_METRICS_API_URL) as response:
+            # TODO: Handle errors or fallback to other API server ?
             response.raise_for_status()
             messages = await response.json()
     return filter_metrics_messages(messages["messages"])
