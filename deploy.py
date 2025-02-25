@@ -66,7 +66,8 @@ async def deploy_program():
         sys.exit(4)
 
     account: AccountFromPrivateKey = _load_account()
-    runtime = settings.DEFAULT_RUNTIME_ID
+    # runtime = settings.DEFAULT_RUNTIME_ID
+    runtime = "f9f329dfed6bceff348ab181cc1a9cf1293520cad64267f96331bea94531d558"
 
     async with AuthenticatedAlephHttpClient(
         account=account, api_server=settings.API_HOST
